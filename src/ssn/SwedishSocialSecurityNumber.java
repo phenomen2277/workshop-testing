@@ -47,7 +47,7 @@ public class SwedishSocialSecurityNumber {
 		if (_year < 1)
 			throw new IllegalArgumentException();
 
-		if (this.isLeapYear(this.getYear()) && _month == 2 && _day == 29)
+		if (this.isLeapYear(this.getYear()) == false && _month == 2 && _day > 28)
 			throw new IllegalArgumentException();
 
 		Integer checkSum = this.getCheckSum(socialSecurityNumber);
