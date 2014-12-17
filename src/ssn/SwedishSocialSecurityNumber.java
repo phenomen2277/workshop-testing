@@ -108,7 +108,7 @@ public class SwedishSocialSecurityNumber {
 		return false;
 	}
 
-	public Integer getCheckSum(String number) {
+	private Integer getCheckSum(String number) {
 		int variegated = 2;
 		Integer temp = 0;
 		List<Integer> list = new ArrayList<Integer>();
