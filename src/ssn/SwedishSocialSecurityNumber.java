@@ -1,7 +1,10 @@
 package ssn;
 
 import java.text.DateFormatSymbols;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +22,7 @@ public class SwedishSocialSecurityNumber {
 
 	public SwedishSocialSecurityNumber(String socialSecurityNumber)
 			throws IllegalArgumentException {
+		socialSecurityNumber = socialSecurityNumber.trim();
 		_tenDigitPattern = Pattern.compile(TEN_DIGIT_PATTERN);
 		_isOver100 = false;
 
@@ -42,9 +46,17 @@ public class SwedishSocialSecurityNumber {
 			throw new IllegalArgumentException();
 		if (_year < 1)
 			throw new IllegalArgumentException();
-		
-		if(this.isLeapYear(this.getYear()) && _month == 2 && _day == 29)
+
+		if (this.isLeapYear(this.getYear()) && _month == 2 && _day == 29)
 			throw new IllegalArgumentException();
+
+		Integer checkSum = this.getCheckSum(socialSecurityNumber);
+		String lastNumber = socialSecurityNumber.substring(socialSecurityNumber
+				.length() - 1);
+
+		if (!checkSum.toString().equals(lastNumber)) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	public int getYear() {
@@ -73,8 +85,10 @@ public class SwedishSocialSecurityNumber {
 		return dfs.getMonths()[_month - 1];
 	}
 
-	public int getMonthNumber() { return _month;}
-	
+	public int getMonthNumber() {
+		return _month;
+	}
+
 	public int getDay() {
 		return _day;
 	}
@@ -87,10 +101,40 @@ public class SwedishSocialSecurityNumber {
 		_matcher = _tenDigitPattern.matcher(number);
 		return _matcher.matches();
 	}
-	
-	private boolean isLeapYear(int year){
-		if ((year & 3) == 0 && ((year % 25) != 0 || (year & 15) == 0)) return true;
+
+	private boolean isLeapYear(int year) {
+		if ((year & 3) == 0 && ((year % 25) != 0 || (year & 15) == 0))
+			return true;
 		return false;
+	}
+
+	public Integer getCheckSum(String number) {
+		int variegated = 2;
+		Integer temp = 0;
+		List<Integer> list = new ArrayList<Integer>();
+		for (int i = 0; i < number.length() - 1; i++) {
+			if (i == 6)
+				continue;
+			temp = Character.getNumericValue(number.charAt(i));
+
+			temp = temp * variegated;
+
+			for (int j = 0; j < temp.toString().length(); j++) {
+				list.add(Character.getNumericValue(temp.toString().charAt(j)));
+			}
+
+			if (variegated == 2)
+				variegated = 1;
+			else
+				variegated = 2;
+		}
+
+		int sum = 0;
+		Iterator<Integer> iter = list.iterator();
+		while (iter.hasNext()) {
+			sum = sum + iter.next();
+		}
+		return (10 - (sum % 10));
 	}
 
 }
