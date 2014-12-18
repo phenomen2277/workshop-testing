@@ -28,7 +28,7 @@ public class SwedishSocialSecurityNumber {
 		_isOver100 = false;
 
 		if (!this.isTenDigit(socialSecurityNumber))
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("The format have to be YYMMDD-XXXX");
 
 		try {
 			_year = Integer.parseInt(socialSecurityNumber.substring(0, 2));
@@ -36,21 +36,21 @@ public class SwedishSocialSecurityNumber {
 			_day = Integer.parseInt(socialSecurityNumber.substring(4, 6));
 			_code = socialSecurityNumber.substring(7, 11);
 		} catch (Exception e) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Error when parsing data from the SSN given");
 		}
 
 		if (socialSecurityNumber.charAt(6) == '+')
 			_isOver100 = true;
 
 		if(!this.isDateValid(this.getYear(), _month, _day))
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("The date given is not valid");
 		
 		Integer checkSum = this.getCheckSum(socialSecurityNumber);
 		String lastNumber = socialSecurityNumber.substring(socialSecurityNumber
 				.length() - 1);
 
 		if (!checkSum.toString().equals(lastNumber)) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("The control number is invalid");
 		}
 	}
 

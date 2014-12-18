@@ -39,7 +39,6 @@ public class VerifyImplementation {
 		assertEquals(1981, actual);
 		
 		actual = bornAfter2000.getYear();
-		System.out.println(actual);
 		assertEquals(2014, actual);
 		
 		actual = bornBefore2000.getYear();
