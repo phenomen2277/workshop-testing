@@ -28,7 +28,7 @@ public class SwedishSocialSecurityNumber {
 		_isOver100 = false;
 
 		if (!this.isTenDigit(socialSecurityNumber))
-			throw new IllegalArgumentException("The format have to be YYMMDD-XXXX");
+			throw new IllegalArgumentException("The format has to be YYMMDD-XXXX or YYMMDD+XXXX");
 
 		try {
 			_year = Integer.parseInt(socialSecurityNumber.substring(0, 2));
@@ -36,7 +36,7 @@ public class SwedishSocialSecurityNumber {
 			_day = Integer.parseInt(socialSecurityNumber.substring(4, 6));
 			_code = socialSecurityNumber.substring(7, 11);
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Error when parsing data from the SSN given");
+			throw new IllegalArgumentException("Error when parsing date parts from the SSN given");
 		}
 
 		if (socialSecurityNumber.charAt(6) == '+')
