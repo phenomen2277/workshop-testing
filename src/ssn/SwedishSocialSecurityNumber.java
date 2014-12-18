@@ -3,6 +3,7 @@ package ssn;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -40,16 +41,10 @@ public class SwedishSocialSecurityNumber {
 
 		if (socialSecurityNumber.charAt(6) == '+')
 			_isOver100 = true;
-		if (_day < 1 || _day > 31)
-			throw new IllegalArgumentException();
-		if (_month < 1 || _month > 12)
-			throw new IllegalArgumentException();
-		if (_year < 1)
-			throw new IllegalArgumentException();
 
-		if (this.isLeapYear(this.getYear()) == false && _month == 2 && _day > 28)
+		if(!this.isDateValid(this.getYear(), _month, _day))
 			throw new IllegalArgumentException();
-
+		
 		Integer checkSum = this.getCheckSum(socialSecurityNumber);
 		String lastNumber = socialSecurityNumber.substring(socialSecurityNumber
 				.length() - 1);
@@ -102,11 +97,6 @@ public class SwedishSocialSecurityNumber {
 		return _matcher.matches();
 	}
 
-	private boolean isLeapYear(int year) {
-		if ((year & 3) == 0 && ((year % 25) != 0 || (year & 15) == 0))
-			return true;
-		return false;
-	}
 
 	private Integer getCheckSum(String number) {
 		int variegated = 2;
@@ -132,6 +122,19 @@ public class SwedishSocialSecurityNumber {
 			sum = sum + iter.next();
 		}
 		return (10 - (sum % 10));
+	}
+	
+	public boolean isDateValid(int year, int month, int day){
+		try {
+            Calendar cal = new GregorianCalendar();
+            cal.setLenient(false);
+            cal.set(year, month - 1, day);
+            cal.getTime();
+        } catch (Exception e) {         
+            return false;
+        }
+		
+		return true;
 	}
 
 }
