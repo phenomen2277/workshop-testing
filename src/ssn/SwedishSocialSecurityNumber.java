@@ -122,11 +122,8 @@ public class SwedishSocialSecurityNumber {
 			for (int j = 0; j < temp.toString().length(); j++) {
 				list.add(Character.getNumericValue(temp.toString().charAt(j)));
 			}
-
-			if (variegated == 2)
-				variegated = 1;
-			else
-				variegated = 2;
+			
+			variegated = variegated == 2 ? 1 : 2;
 		}
 
 		int sum = 0;
