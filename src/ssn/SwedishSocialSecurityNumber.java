@@ -124,7 +124,7 @@ public class SwedishSocialSecurityNumber {
 		return (10 - (sum % 10));
 	}
 	
-	public boolean isDateValid(int year, int month, int day){
+	private boolean isDateValid(int year, int month, int day){
 		try {
             Calendar cal = new GregorianCalendar();
             cal.setLenient(false);
