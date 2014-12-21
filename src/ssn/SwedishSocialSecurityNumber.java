@@ -3,6 +3,7 @@ package ssn;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -43,7 +44,7 @@ public class SwedishSocialSecurityNumber {
 			_isOver100 = true;
 
 		if(!this.isDateValid(this.getYear(), _month, _day))
-			throw new IllegalArgumentException("The date given is not valid");
+			throw new IllegalArgumentException("The date given is not valid or is fictional");
 		
 		Integer checkSum = this.getCheckSum(socialSecurityNumber);
 		String lastNumber = socialSecurityNumber.substring(socialSecurityNumber
@@ -125,15 +126,17 @@ public class SwedishSocialSecurityNumber {
 	}
 	
 	private boolean isDateValid(int year, int month, int day){
+		Calendar cal = null;
 		try {
-            Calendar cal = new GregorianCalendar();
+            cal = new GregorianCalendar();
             cal.setLenient(false);
             cal.set(year, month - 1, day);
             cal.getTime();
         } catch (Exception e) {         
             return false;
         }
-		
+		Date currentDate = new Date();
+		if(cal.getTime().compareTo(currentDate) > 0) return false;
 		return true;
 	}
 
